@@ -6,6 +6,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -294,6 +295,13 @@ public class PatientInformation {
 		Thread.sleep(2000);
 
 		driver.findElement(By.xpath("//button[@id='submitBtn']")).click();
+		try {
+		    Alert alert = driver.switchTo().alert();
+		    System.out.println("Alert message: " + alert.getText());
+		    alert.accept(); // or alert.dismiss(); based on your logic
+		} catch (NoAlertPresentException e) {
+		    // No alert to handle
+		}
 
 	}
 
@@ -302,7 +310,7 @@ public class PatientInformation {
 
 		driver.get("https://srv701482.hstgr.cloud/doctor/login");
 
-		driver.manage().window().maximize();
+//		driver.manage().window().maximize();
 
 		driver.findElement(By.xpath("//input[@id='username_or_email']")).sendKeys("anitha123test@gmail.com");
 		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("Sana@123");
@@ -332,7 +340,7 @@ public class PatientInformation {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click()", clk);
 
-		// Upload Documents
+		
 
 // Upload Documents
 
@@ -348,6 +356,13 @@ public class PatientInformation {
 		Thread.sleep(2000);
 
 		driver.findElement(By.xpath("//button[@id='submitBtn']")).click();
+		try {
+		    Alert alert = driver.switchTo().alert();
+		    System.out.println("Alert message: " + alert.getText());
+		    alert.accept(); // or alert.dismiss(); based on your logic
+		} catch (NoAlertPresentException e) {
+		    // No alert to handle
+		}
 
 	}
 
@@ -402,11 +417,24 @@ public class PatientInformation {
 		Thread.sleep(2500);
 
 		driver.findElement(By.xpath("//button[@id='submitBtn']")).click();
+		
+		Thread.sleep(1000);
+		try {
+		    Alert alert = driver.switchTo().alert();
+		    System.out.println("Alert message: " + alert.getText());
+		    alert.accept(); // or alert.dismiss(); based on your logic
+		} catch (NoAlertPresentException e) {
+		    // No alert to handle
+		}
+		
+//		WebElement backBtn=driver.findElement(By.xpath("//*[contains(@id,'back-btn')]"));
+//		
+//		js.executeScript("arguments[0].click();", backBtn);
 
 	}
 
 	@Test(priority = 8)
-	public void backbtn() throws InterruptedException {
+	public void Homebtn() throws InterruptedException {
 
 		driver.get("https://srv701482.hstgr.cloud/doctor/login");
 
@@ -441,8 +469,59 @@ public class PatientInformation {
 		js.executeScript("arguments[0].click()", clk);
 
 		driver.findElement(By.xpath("//button[@id='home-btn']")).click();
+		Thread.sleep(3000);
+		
+//		Alert alert = driver.switchTo().alert();
+//		alert.accept();
+//		
+//		driver.findElement(By.xpath("//*[contains(@id,'back-btn')]")).click();
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement Homebtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id,'back-btn')]")));
+		js.executeScript("arguments[0].click();", Homebtn);
 
-		driver.findElement(By.xpath("//*[contains(@id,'back-btn')]")).click();
+	}
+	
+	@Test(priority = 9)
+	public void backbtn() throws InterruptedException {
+		
+
+		driver.get("https://srv701482.hstgr.cloud/doctor/login");
+
+		driver.manage().window().maximize();
+
+		driver.findElement(By.xpath("//input[@id='username_or_email']")).sendKeys("anitha123test@gmail.com");
+		driver.findElement(By.xpath("//input[@id='password']")).sendKeys("Sana@123");
+
+		// Click the Login button
+
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+		// Patient Quick Search with mail
+
+		driver.findElement(By.xpath(
+				"//a [@class='flex items-center space-x-2 text-gray-300 hover:bg-[#3a3f4b] px-4 py-2 rounded-lg'][4]"))
+				.click();
+
+		WebElement frameElement = driver.findElement(By.xpath("//iframe[@id='content-frame-home']"));
+
+		driver.switchTo().frame(frameElement);
+
+		driver.findElement(By.xpath("//button[@id='tab-quick']")).click();
+
+		driver.findElement(By.xpath("//input[@id='patient_id_email']")).sendKeys("327");
+
+		driver.findElement(By.xpath("//button[@type='submit'][1]")).click();
+
+		WebElement clk = driver.findElement(By.xpath(
+				"//a[@class='inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-3 rounded transition duration-150']"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click()", clk);
+
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement backButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@id,'back-btn')]")));
+		js.executeScript("arguments[0].click();", backButton);
 
 	}
 
